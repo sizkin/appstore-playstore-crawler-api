@@ -4,7 +4,7 @@
   "description": "API that crawls through both Google Play Store and Apple App Store",
   "main": "index.js",
   "scripts": {
-    "test": "mocha tests/tests.spec.js"
+    "test": "./node_modules/mocha/bin/mocha tests/tests.spec.js"
   },
   "repository": {
     "type": "git",
