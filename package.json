@@ -1,0 +1,32 @@
+{
+  "name": "appstore-playstore-crawler-api",
+  "version": "1.0.0",
+  "description": "API that crawls through both Google Play Store and Apple App Store",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/tests.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midyan/appstore-playstore-crawler-api.git"
+  },
+  "keywords": [
+    "apps",
+    "crawler",
+    "nodejs",
+    "node_js",
+    "javascript",
+    "api",
+    "integration"
+  ],
+  "author": "Yan Nunes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/midyan/appstore-playstore-crawler-api/issues"
+  },
+  "homepage": "https://github.com/midyan/appstore-playstore-crawler-api#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
