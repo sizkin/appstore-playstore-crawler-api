@@ -128,7 +128,52 @@ describe('Testing unified Crawler API', () => {
       .then(result => {
         expect(result).to.be.an('object')
         expect(result).to.have.property('rank').above(-1)
+        expect(result).to.have.property('rankOverall').above(-1)
         done()
+        console.log(result.rank)
+        console.log(result.rankOverall)
+      })
+      .catch(err => {
+        if (err) console.log(err)
+        expect(err).to.equal(null)
+        done()
+      })
+    })
+    it('should return the ranking of WhatsApp', function(done) {
+      this.timeout(10000)
+      mainFile.getGoogleRanking({
+          appId: 'com.whatsapp',
+          lang: 'en',
+          country:'us'
+      })
+      .then(result => {
+        expect(result).to.be.an('object')
+        expect(result).to.have.property('rank').above(-1)
+        expect(result).to.not.have.property('rankOverall')
+        done()
+        console.log(result.rank)
+        console.log(result.rankOverall)
+      })
+      .catch(err => {
+        if (err) console.log(err)
+        expect(err).to.equal(null)
+        done()
+      })
+    })
+    it('should return the ranking of Word from Brazil Store', function(done) {
+      this.timeout(10000)
+      mainFile.getGoogleRanking({
+          appId: 'com.microsoft.office.word',
+          lang: 'pt',
+          country:'br'
+      })
+      .then(result => {
+        expect(result).to.be.an('object')
+        expect(result).to.have.property('rank').above(-1)
+        expect(result).to.not.have.property('rankOverall')
+        done()
+        console.log(result.rank)
+        console.log(result.rankOverall)
       })
       .catch(err => {
         if (err) console.log(err)

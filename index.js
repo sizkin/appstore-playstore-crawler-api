@@ -13,7 +13,7 @@ const q = require('q')
  */
 var getGoogleSearchResult = (appName) => {
   var dfd = q.defer()
-
+  appName = appName || 'Plants Vs Zombies'
   googleScraper
     .search({
       term: appName,
@@ -141,13 +141,16 @@ var getGoogleRanking = (options) => {
           var listOptions = {
             category: googleScraper.category[result],
             lang: options.lang,
-            county: options.country
+            country: options.country
           }
+
           listOptions.category = googleScraper.category[result.genreId]
           listOptions.collection = result.free ?
                                     googleScraper.collection.TOP_FREE :
                                     googleScraper.collection.TOP_PAID
           // console.log(listOptions.category)
+          // console.log(listOptions)
+          // console.log(result)
           callback(null, listOptions, result)
         })
         .catch(err => callback(err))
@@ -155,11 +158,23 @@ var getGoogleRanking = (options) => {
     (listOptions, appInfo, callback) => {
       getEntireListOfCategoryGoogle(listOptions)
       .then(result => {
-        // console.log(appInfo.appId)
-        appInfo.rank = _.findIndex(result, (app) => app.appId === appInfo.appId)
-        callback(null, appInfo)
+        appInfo.rank = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+        callback(null, listOptions, appInfo)
       })
       .catch(err => callback(err))
+    },
+    (listOptions, appInfo, callback) => {
+      if(appInfo.genreId.indexOf('GAME') > -1){
+        listOptions.category = googleScraper.category.GAME
+        getEntireListOfCategoryGoogle(listOptions)
+        .then(result => {
+          appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+          callback(null, appInfo)
+        })
+        .catch(err => callback(err))
+      } else {
+        callback(null, appInfo)
+      }
     }
   ]
 
