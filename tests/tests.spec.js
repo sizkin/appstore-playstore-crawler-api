@@ -239,7 +239,7 @@ describe('Testing unified Crawler API', () => {
           expect(result).to.have.property('rank')
           expect(result.rank).to.be.an('number')
           expect(result.rank).to.be.above(0)
-          console.log(result.rank)
+          console.log("            Category Ranking: "+result.rank)
           done()
         })
         .catch(err => {
