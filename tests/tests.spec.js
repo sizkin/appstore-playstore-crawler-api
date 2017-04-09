@@ -213,7 +213,6 @@ describe('Testing unified Crawler API', () => {
         })
         .then(result => {
           expect(result).to.be.an('array')
-          console.log(result)
           done()
         })
         .catch(err => {
