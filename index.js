@@ -287,7 +287,7 @@ var getAppleRankingSingleGenre = (options) => {
    options = options || {}
 
    options = {
-     id = options.id || 368677368
+     id: options.id || 368677368
    }
 
    var funcArray = [
