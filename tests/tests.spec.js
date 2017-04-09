@@ -8,7 +8,7 @@ var expect = chai.expect
  * they will only throw errors if you uncomment them
  */
 
-// First Build Test
+
 // describe('Successful first build', () => {
 //   it('Should equal to 3', (done) => {
 //     expect(mainFile.logBuild()).to.equal(3)
@@ -16,28 +16,50 @@ var expect = chai.expect
 //   })
 // })
 
-describe('Testing the Google Scraper API', () => {
-  describe('Testing the App Function to retrive the app Info', () => {
-    it('Should return the App Info for Plants Vs Zombies', (done) => {
-      mainFile.getPvZGoogle()
-      .then((result) => {
-        console.log(result)
-        expect(result).to.be.an('object')
-        done()
-      })
-      .catch((err) => {
-        console.log(err)
-        expect(err).to.equal(null)
-        done()
-      })
-    })
-  })
-})
+// describe('Testing the Google Scraper API', () => {
+//   describe('Testing the App Function to retrive the app Info', () => {
+//     it('Should return the App Info for Plants Vs Zombies', (done) => {
+//       mainFile.getPvZGoogle()
+//       .then((result) => {
+//         console.log(result)
+//         expect(result).to.be.an('object')
+//         done()
+//       })
+//       .catch((err) => {
+//         console.log(err)
+//         expect(err).to.equal(null)
+//         done()
+//       })
+//     })
+//   })
+// })
 
-describe('Testing the Apple Scraper API', () => {
-  describe('Testing the App Function to retrive the app Info', () => {
-    it('Should return the App Info for Plants Vs Zombies', (done) => {
-      mainFile.getPvZApple()
+// describe('Testing the Apple Scraper API', () => {
+//   describe('Testing the App Function to retrive the app Info', () => {
+//     it('Should return the App Info for Plants Vs Zombies', (done) => {
+//       mainFile.getPvZApple()
+//       .then((result) => {
+//         console.log(result)
+//         expect(result).to.be.an('object')
+//         done()
+//       })
+//       .catch((err) => {
+//         console.log(err)
+//         expect(err).to.equal(null)
+//         done()
+//       })
+//     })
+//   })
+// })
+
+describe('Testing the Google Scraper API', () => {
+  describe('Testing how the search result return', () => {
+    it('Should return details of the first result', function(done) {
+      this.timeout(10000)
+      mainFile.getGoogleSearchResult({
+        term: "Fruit Ninja",
+        num: 25
+      })
       .then((result) => {
         console.log(result)
         expect(result).to.be.an('object')
