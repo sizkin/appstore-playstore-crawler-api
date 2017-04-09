@@ -56,7 +56,7 @@ var getAppleSearchResult = (appName) => {
 }
 
 /**
- * Gets ranking of app from Googe Play Store by
+ * Gets list of top 200 apps from category/collection
  * its ID
  * @function
  * @param {object} options - App Options
@@ -77,7 +77,7 @@ var getEntireListOfCategoryGoogle = (listOptions) => {
       googleScraper
         .list(listOptions)
         .then(result => {
-          console.log('ok ' + index)
+          // console.log('ok ' + index)
           list = _.concat(list, result)
           listOptions.start = list.length
           index = list.length
@@ -94,14 +94,14 @@ var getEntireListOfCategoryGoogle = (listOptions) => {
       googleScraper
         .list(listOptions)
         .then(result => {
-          console.log('ok ' + index)
+          // console.log('ok ' + index)
           list = _.concat(list, result)
           listOptions.start = list.length
           index = list.length
           callback(null, list, listOptions)
         })
         .catch((err) => {
-          console.log('error at index ' + index)
+          // console.log('error at index ' + index)
           console.log(JSON.stringify(err))
           callback(err)
         })
@@ -109,7 +109,7 @@ var getEntireListOfCategoryGoogle = (listOptions) => {
   ]
   async.waterfall(
     funcArray,
-    (err, result) => err? dfd.reject(err) : dfd.resolve(result)
+    (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
   )
   return dfd.promise
 }
@@ -121,34 +121,52 @@ var getEntireListOfCategoryGoogle = (listOptions) => {
  * @param {object} options - App Options
  * @returns promise
  */
-var getGoogleRankingByOptions = (options) => {
+var getGoogleRanking = (options) => {
   var dfd = q.defer()
 
+  options = options || {}
+
   options = {
-    appId: options.appId || com.dxco.pandavszombies,
+    appId: options.appId || 'com.halfbrick.fruitninja',
     lang: options.lang || 'en',
     country: options.country || 'us'
   }
 
-  googleScraper
-    .app(options)
-    .then(result => {
-      var listOptions = {
-        category: googleScraper.category[result],
-        lang: options.lang,
-        county: options.country
-      }
+  var funcArray = [
+    (callback) => {
+      googleScraper
+        .app(options)
+        .then(result => {
+          // console.log(result)
+          var listOptions = {
+            category: googleScraper.category[result],
+            lang: options.lang,
+            county: options.country
+          }
+          listOptions.category = googleScraper.category[result.genreId]
+          listOptions.collection = result.free ?
+                                    googleScraper.collection.TOP_FREE :
+                                    googleScraper.collection.TOP_PAID
+          // console.log(listOptions.category)
+          callback(null, listOptions, result)
+        })
+        .catch(err => callback(err))
+    },
+    (listOptions, appInfo, callback) => {
+      getEntireListOfCategoryGoogle(listOptions)
+      .then(result => {
+        // console.log(appInfo.appId)
+        appInfo.rank = _.findIndex(result, (app) => app.appId === appInfo.appId)
+        callback(null, appInfo)
+      })
+      .catch(err => callback(err))
+    }
+  ]
 
-      if (result.free) {
-        listOptions.collection = googleScraper.collection.TOP_FREE
-      } else {
-        listOptions.collection = googleScraper.collection.TOP_PAID
-      }
-
-      return getEntireListOfCategoryGoogle(listOptions, result.appId)
-    })
-    .then(result => { dfd.resolve(result) })
-    .catch(err => { dfd.reject(err) })
+  async.waterfall(
+    funcArray,
+    (err, result) => err? dfd.reject(err) : dfd.resolve(result)
+  )
 
   return dfd.promise
 }
@@ -156,5 +174,6 @@ var getGoogleRankingByOptions = (options) => {
 module.exports = {
   getGoogleSearchResult: getGoogleSearchResult,
   getAppleSearchResult: getAppleSearchResult,
-  getEntireListOfCategoryGoogle: getEntireListOfCategoryGoogle
+  getEntireListOfCategoryGoogle: getEntireListOfCategoryGoogle,
+  getGoogleRanking: getGoogleRanking
 }

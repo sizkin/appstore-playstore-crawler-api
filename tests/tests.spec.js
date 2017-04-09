@@ -97,7 +97,7 @@ describe('Testing unified Crawler API', () => {
   describe('Testing getting entire list of a category', () => {
     var itemNumber = 200
     it('Should return '+itemNumber+' items', function(done) {
-      this.timeout(1000000)
+      this.timeout(10000)
       mainFile.getEntireListOfCategoryGoogle({
         category: googleScraper.category.GAME,
         collection: googleScraper.collection.TOP_FREE,
@@ -105,12 +105,33 @@ describe('Testing unified Crawler API', () => {
         country: 'us'
       })
       .then(result => {
-        console.log(result.length)
+        // console.log(result.length)
         expect(result).to.have.lengthOf(itemNumber)
         done()
       })
       .catch(err => {
         console.log(JSON.stringify(err))
+        expect(err).to.equal(null)
+        done()
+      })
+    })
+  })
+
+  describe('Getting category ranking from app ID and', () => {
+    it('should return the ranking of Fruit Ninja App', function(done) {
+      this.timeout(10000)
+      mainFile.getGoogleRanking({
+          appId: 'com.halfbrick.fruitninja',
+          lang: 'en',
+          country:'us'
+      })
+      .then(result => {
+        expect(result).to.be.an('object')
+        expect(result).to.have.property('rank').above(-1)
+        done()
+      })
+      .catch(err => {
+        if (err) console.log(err)
         expect(err).to.equal(null)
         done()
       })
