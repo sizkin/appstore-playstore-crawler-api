@@ -164,8 +164,16 @@ var getGoogleRanking = (options) => {
       .catch(err => callback(err))
     },
     (listOptions, appInfo, callback) => {
-      if(appInfo.genreId.indexOf('GAME') > -1){
+      if(appInfo.genreId.indexOf('GAME') > -1) {
         listOptions.category = googleScraper.category.GAME
+        getEntireListOfCategoryGoogle(listOptions)
+        .then(result => {
+          appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+          callback(null, appInfo)
+        })
+        .catch(err => callback(err))
+      } else if(appInfo.genreId.indexOf('FAMILY') > -1) {
+        listOptions.category = googleScraper.category.FAMILY
         getEntireListOfCategoryGoogle(listOptions)
         .then(result => {
           appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1

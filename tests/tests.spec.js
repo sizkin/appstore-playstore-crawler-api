@@ -130,8 +130,8 @@ describe('Testing unified Crawler API', () => {
         expect(result).to.have.property('rank').above(-1)
         expect(result).to.have.property('rankOverall').above(-1)
         done()
-        console.log(result.rank)
-        console.log(result.rankOverall)
+        console.log("            Overall Ranking: "+result.rankOverall)
+        console.log("            Category Ranking: "+result.rank)
       })
       .catch(err => {
         if (err) console.log(err)
@@ -151,8 +151,8 @@ describe('Testing unified Crawler API', () => {
         expect(result).to.have.property('rank').above(-1)
         expect(result).to.not.have.property('rankOverall')
         done()
-        console.log(result.rank)
-        console.log(result.rankOverall)
+        console.log("            Overall Ranking: "+result.rankOverall)
+        console.log("            Category Ranking: "+result.rank)
       })
       .catch(err => {
         if (err) console.log(err)
@@ -172,8 +172,28 @@ describe('Testing unified Crawler API', () => {
         expect(result).to.have.property('rank').above(-1)
         expect(result).to.not.have.property('rankOverall')
         done()
-        console.log(result.rank)
-        console.log(result.rankOverall)
+        console.log("            Overall Ranking: "+result.rankOverall)
+        console.log("            Category Ranking: "+result.rank)
+      })
+      .catch(err => {
+        if (err) console.log(err)
+        expect(err).to.equal(null)
+        done()
+      })
+    })
+    it('should return both rankings from game app', function(done) {
+      this.timeout(10000)
+      mainFile.getGoogleRanking({
+          appId: 'com.nway.powerrangerslegacywars',
+          country:'us'
+      })
+      .then(result => {
+        expect(result).to.be.an('object')
+        expect(result).to.have.property('rank').above(-1)
+        expect(result).to.have.property('rankOverall')
+        done()
+        console.log("            Overall Ranking: "+result.rankOverall)
+        console.log("            Category Ranking: "+result.rank)
       })
       .catch(err => {
         if (err) console.log(err)
