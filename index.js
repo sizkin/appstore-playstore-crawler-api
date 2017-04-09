@@ -168,7 +168,6 @@ var getGoogleRanking = (options) => {
   return dfd.promise
 }
 
-
 /**
 * Get search result by entering name of App
 * from Apple App Store.
@@ -196,7 +195,7 @@ var getAppleSearchResult = (appName) => {
 }
 
 /**
- * Gets list of top 200 apps from category/collection
+ * Gets list of top 100 apps from category/collection
  * its ID
  * @function
  * @param {object} options - App Options
@@ -226,6 +225,57 @@ var getEntireListOfCategoryApple = (listOptions) => {
   return dfd.promise
 }
 
+/**
+ * Gets ranking of app from Googe Play Store by
+ * its ID
+ * @function
+ * @param {object} options - App Options
+ * @returns promise
+ */
+var getAppleRankingSingleGenre = (options) => {
+  var dfd = q.defer()
+
+  options = {
+    free: options.free || true,
+    id: options.id || 1038508829,
+    listOptions: {
+      category: (options.listOptions||{}).category || 6014,
+      lang: 'en',
+      country: 'us'
+    }
+  }
+
+  if (options.free) {
+    options.listOptions.collection = appleScraper.collection.TOP_FREE_IOS
+  } else {
+    options.listOptions.collection = appleScraper.collection.TOP_PAID_IOS
+  }
+
+  var funcArray = [
+    (callback) => {
+      appleScraper
+        .list(options.listOptions)
+        .then(result => {
+          callback(null, result, options)
+        })
+        .catch(err => callback(err))
+    },
+    (genreList, options, callback) => {
+      // console.log(genreList)
+      options.rank = _.findIndex(genreList, (app) => app.id == options.id) + 1
+      // options.rank = parseInt(options.rank)
+      callback(null, options)
+    }
+  ]
+
+  async.waterfall(
+    funcArray,
+    (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
+  )
+
+  return dfd.promise
+}
+
 module.exports = {
   google: {
     getSearchResult: getGoogleSearchResult,
@@ -234,6 +284,7 @@ module.exports = {
   },
   apple: {
     getSearchResult: getAppleSearchResult,
-    getEntireListOfCategory: getEntireListOfCategoryApple
+    getEntireListOfCategory: getEntireListOfCategoryApple,
+    getRankingSingleGenre: getAppleRankingSingleGenre
   }
 }

@@ -21,12 +21,12 @@ var expect = chai.expect
 //   describe('Testing the App Function to retrive the app Info', () => {
 //     it('Should return the App Info for Plants Vs Zombies', (done) => {
 //       mainFile.getPvZGoogle()
-//       .then((result) => {
+//       .then(result => {
 //         console.log(result)
 //         expect(result).to.be.an('object')
 //         done()
 //       })
-//       .catch((err) => {
+//       .catch(err => {
 //         console.log(err)
 //         expect(err).to.equal(null)
 //         done()
@@ -39,12 +39,12 @@ var expect = chai.expect
 //   describe('Testing the App Function to retrive the app Info', () => {
 //     it('Should return the App Info for Plants Vs Zombies', (done) => {
 //       mainFile.getPvZApple()
-//       .then((result) => {
+//       .then(result => {
 //         console.log(result)
 //         expect(result).to.be.an('object')
 //         done()
 //       })
-//       .catch((err) => {
+//       .catch(err => {
 //         console.log(err)
 //         expect(err).to.equal(null)
 //         done()
@@ -59,12 +59,12 @@ describe('Testing the Google Scraper API', () => {
     it('Should return details of the search by name', function(done) {
       this.timeout(10000)
       mainFile.google.getSearchResult("Fruit Ninja")
-      .then((result) => {
+      .then(result => {
         // console.log(result)
         expect(result).to.be.an('array')
         done()
       })
-      .catch((err) => {
+      .catch(err => {
         // console.log(err)
         expect(err).to.equal(null)
         done()
@@ -78,13 +78,13 @@ describe('Testing the App Store Scraper API', () => {
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
       this.timeout(10000)
-      mainFile.apple.getSearchResult("Fruit Ninja")
-      .then((result) => {
+      mainFile.apple.getSearchResult("Uber")
+      .then(result => {
         // console.log(result)
         expect(result).to.be.an('array')
         done()
       })
-      .catch((err) => {
+      .catch(err => {
         // console.log(err)
         expect(err).to.equal(null)
         done()
@@ -213,6 +213,33 @@ describe('Testing unified Crawler API', () => {
         })
         .then(result => {
           expect(result).to.be.an('array')
+          done()
+        })
+        .catch(err => {
+          if (err) console.log(err)
+          expect(err).to.equal(null)
+          done()
+        })
+      })
+    })
+    describe('Testing if genre rank is returned correctly', () => {
+      it('should be a rank bigger than 0 for UBER', function(done){
+        mainFile.apple.getRankingSingleGenre({
+          free: true,
+          id: 368677368,
+          listOptions: {
+            category: 6003,
+            lang: 'en',
+            country: 'us'
+          }
+        })
+        .then(result => {
+          expect(result).to.be.an('object')
+          expect(result).to.have.property('listOptions')
+          expect(result).to.have.property('rank')
+          expect(result.rank).to.be.an('number')
+          expect(result.rank).to.be.above(0)
+          console.log(result.rank)
           done()
         })
         .catch(err => {
