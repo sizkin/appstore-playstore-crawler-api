@@ -226,8 +226,7 @@ var getEntireListOfCategoryApple = (listOptions) => {
 }
 
 /**
- * Gets ranking of app from Googe Play Store by
- * its ID
+ * Get ranking for individual ranking of genre
  * @function
  * @param {object} options - App Options
  * @returns promise
@@ -275,6 +274,37 @@ var getAppleRankingSingleGenre = (options) => {
 
   return dfd.promise
 }
+
+/**
+ * Get ranking for all genres of app
+ * @function
+ * @param {object} options - App Options
+ * @returns promise
+ */
+ var getOverallRankingApple = (options) => {
+   var dfd = q.defer()
+
+   options = options || {}
+
+   options = {
+     id = options.id || 368677368
+   }
+
+   var funcArray = [
+     (callback) => {
+       appleScraper
+        .app(options)
+        .then(result =>{
+
+        })
+     }
+   ]
+   async.waterfall(
+     funcArray,
+     (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
+   )
+   return dfd.promise
+ }
 
 module.exports = {
   google: {
