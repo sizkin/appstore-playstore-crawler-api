@@ -1,6 +1,7 @@
 const chai = require('chai')
 const mainFile = require('../index.js')
 const googleScraper = require('google-play-scraper')
+const appleScraper = require('app-store-scraper')
 
 var expect = chai.expect
 
@@ -8,7 +9,6 @@ var expect = chai.expect
  * Old tests won't be deleted, only commented. Please, let these old tests be,
  * they will only throw errors if you uncomment them
  */
-
 
 // describe('Successful first build', () => {
 //   it('Should equal to 3', (done) => {
@@ -58,7 +58,7 @@ describe('Testing the Google Scraper API', () => {
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
       this.timeout(10000)
-      mainFile.getGoogleSearchResult("Fruit Ninja")
+      mainFile.google.getSearchResult("Fruit Ninja")
       .then((result) => {
         // console.log(result)
         expect(result).to.be.an('array')
@@ -78,7 +78,7 @@ describe('Testing the App Store Scraper API', () => {
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
       this.timeout(10000)
-      mainFile.getAppleSearchResult("Fruit Ninja")
+      mainFile.apple.getSearchResult("Fruit Ninja")
       .then((result) => {
         // console.log(result)
         expect(result).to.be.an('array')
@@ -98,7 +98,7 @@ describe('Testing unified Crawler API', () => {
     var itemNumber = 200
     it('Should return '+itemNumber+' items', function(done) {
       this.timeout(10000)
-      mainFile.getEntireListOfCategoryGoogle({
+      mainFile.google.getEntireListOfCategory({
         category: googleScraper.category.GAME,
         collection: googleScraper.collection.TOP_FREE,
         lang: 'en',
@@ -120,7 +120,7 @@ describe('Testing unified Crawler API', () => {
   describe('Getting category ranking from app ID and', () => {
     it('should return the ranking of Fruit Ninja App', function(done) {
       this.timeout(10000)
-      mainFile.getGoogleRanking({
+      mainFile.google.getRanking({
           appId: 'com.halfbrick.fruitninja',
           lang: 'en',
           country:'us'
@@ -141,7 +141,7 @@ describe('Testing unified Crawler API', () => {
     })
     it('should return the ranking of WhatsApp', function(done) {
       this.timeout(10000)
-      mainFile.getGoogleRanking({
+      mainFile.google.getRanking({
           appId: 'com.whatsapp',
           lang: 'en',
           country:'us'
@@ -162,7 +162,7 @@ describe('Testing unified Crawler API', () => {
     })
     it('should return the ranking of Word from Brazil Store', function(done) {
       this.timeout(10000)
-      mainFile.getGoogleRanking({
+      mainFile.google.getRanking({
           appId: 'com.microsoft.office.word',
           lang: 'pt',
           country:'br'
@@ -183,7 +183,7 @@ describe('Testing unified Crawler API', () => {
     })
     it('should return both rankings from game app', function(done) {
       this.timeout(10000)
-      mainFile.getGoogleRanking({
+      mainFile.google.getRanking({
           appId: 'com.nway.powerrangerslegacywars',
           country:'us'
       })
@@ -199,6 +199,28 @@ describe('Testing unified Crawler API', () => {
         if (err) console.log(err)
         expect(err).to.equal(null)
         done()
+      })
+    })
+  })
+
+  describe('Testing AppStore API', () => {
+    describe('List length of category that', () => {
+      it('should return 100 apps', function(done){
+        mainFile.apple.getEntireListOfCategory({
+          collection: appleScraper.collection.TOP_FREE_IPAD,
+          category: appleScraper.category.GAMES_ACTION,
+          country: 'br'
+        })
+        .then(result => {
+          expect(result).to.be.an('array')
+          console.log(result)
+          done()
+        })
+        .catch(err => {
+          if (err) console.log(err)
+          expect(err).to.equal(null)
+          done()
+        })
       })
     })
   })

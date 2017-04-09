@@ -30,32 +30,6 @@ var getGoogleSearchResult = (appName) => {
 }
 
 /**
- * Get search result by entering name of App
- * from Apple App Store.
- * @function
- * @param {string} appName - Name of App
- * @returns promise
- */
-var getAppleSearchResult = (appName) => {
-  var dfd = q.defer()
-  appName = appName || 'Plants Vs Zombies'
-
-  appleScraper
-    .search({
-      term: appName,
-      num: 250
-    })
-    .then(result => {
-      dfd.resolve(result)
-    })
-    .catch(error => {
-      dfd.reject(error)
-    })
-
-  return dfd.promise
-}
-
-/**
  * Gets list of top 200 apps from category/collection
  * its ID
  * @function
@@ -194,9 +168,72 @@ var getGoogleRanking = (options) => {
   return dfd.promise
 }
 
+
+/**
+* Get search result by entering name of App
+* from Apple App Store.
+* @function
+* @param {string} appName - Name of App
+* @returns promise
+*/
+var getAppleSearchResult = (appName) => {
+  var dfd = q.defer()
+  appName = appName || 'Plants Vs Zombies'
+
+  appleScraper
+    .search({
+      term: appName,
+      num: 250
+    })
+    .then(result => {
+      dfd.resolve(result)
+    })
+    .catch(error => {
+      dfd.reject(error)
+    })
+
+  return dfd.promise
+}
+
+/**
+ * Gets list of top 200 apps from category/collection
+ * its ID
+ * @function
+ * @param {object} options - App Options
+ * @returns promise
+ */
+var getEntireListOfCategoryApple = (listOptions) => {
+  var dfd = q.defer()
+
+  listOptions.num = 100
+
+  var index = listOptions.start
+
+  var funcArray = [
+    (callback) => {
+      appleScraper
+        .list(listOptions)
+        .then(result => {
+          callback(null, result)
+        })
+        .catch(err => callback(err))
+    }
+  ]
+  async.waterfall(
+    funcArray,
+    (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
+  )
+  return dfd.promise
+}
+
 module.exports = {
-  getGoogleSearchResult: getGoogleSearchResult,
-  getAppleSearchResult: getAppleSearchResult,
-  getEntireListOfCategoryGoogle: getEntireListOfCategoryGoogle,
-  getGoogleRanking: getGoogleRanking
+  google: {
+    getSearchResult: getGoogleSearchResult,
+    getEntireListOfCategory: getEntireListOfCategoryGoogle,
+    getRanking: getGoogleRanking
+  },
+  apple: {
+    getSearchResult: getAppleSearchResult,
+    getEntireListOfCategory: getEntireListOfCategoryApple
+  }
 }
