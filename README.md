@@ -1,6 +1,6 @@
 # Still on development. Not ready to be implemented.
 This readme file is still incomplete. I'm still detailing the parameters for each method
-or any other parameter can change still I publish the finished first version. You will know
+or any other parameter can change untill I publish the finished first version. You will know
 when it happens when I publish this as an NPM package and delete this paragraph.
 
 # Crawler to retrieve the app ranking
