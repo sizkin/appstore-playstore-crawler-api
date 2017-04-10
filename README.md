@@ -31,9 +31,9 @@ It returns two objects, one for the Apple App Store and one for the Google Play 
 Each of these objects have three methods that are equivalents for each store:
 
 ##Methods
-- [getSearchResult](#getSearchResult): Retrieves the 250 first results for a given string as search parameter
-- [getEntireListOfCategory](#getEntireListOfCategory): Retrieves the top apps for a single category. It return 100 apps for the Apple App Store and 200 for the Google Play Store
-- [getRanking](#getRanking): Gets the ranking of a given App.
+- [getSearchResult](#getsearchresult): Retrieves the 250 first results for a given string as search parameter
+- [getEntireListOfCategory](#getrntirelistofcategory): Retrieves the top apps for a single category. It return 100 apps for the Apple App Store and 200 for the Google Play Store
+- [getRanking](#getranking): Gets the ranking of a given App.
 
 ### getSearchResult
 Retrieves the 250 first results for a given string as search parameter. It could be any string.
