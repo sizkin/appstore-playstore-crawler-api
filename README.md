@@ -6,14 +6,14 @@ when it happens when I publish this as an NPM package and delete this paragraph.
 # Crawler to retrieve the app ranking
 ![alt text](https://travis-ci.org/midyan/appstore-playstore-crawler-api.svg?branch=master)
 
-##What is it?
+## What is it?
 It's a simple NodeJS API that returns the current day's App ranking in its category.
 It uses the *google-play-scraper* and the *app-store-scraper* packages form npm to
 retrieve the basic app data, and then calculate it's ranking. Please note, it can only
 get the first 200 (100 for the Apple App Store) apps of each category, so it can only
 return the app ranking if it is one of the top 200/100.
 
-##Installation
+## Installation
 ```
 npm install unified-app-crawler
 ```
@@ -26,13 +26,13 @@ or (ES6)
 import {unifiedCrawler} from 'unified-app-crawler'
 ```
 
-#The API structure
+# The API structure
 It returns two objects, one for the Apple App Store and one for the Google Play Store.
 Each of these objects have three methods that are equivalents for each store:
 
-##Methods
+## Methods
 - [getSearchResult](#getsearchresult): Retrieves the 250 first results for a given string as search parameter
-- [getEntireListOfCategory](#getrntirelistofcategory): Retrieves the top apps for a single category. It return 100 apps for the Apple App Store and 200 for the Google Play Store
+- [getEntireListOfCategory](#getentirelistofcategory): Retrieves the top apps for a single category. It return 100 apps for the Apple App Store and 200 for the Google Play Store
 - [getRanking](#getranking): Gets the ranking of a given App.
 
 ### getSearchResult
@@ -144,10 +144,10 @@ The log would be:
 'SEARCH RESULT HERE'
 ```
 
-#How to test it?
+# How to test it?
 To run all unit testing simply do:
 ```
 npm test
 ```
 
-#Thanks and acknowledgments
+# Thanks and acknowledgments
