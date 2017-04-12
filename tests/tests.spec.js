@@ -67,7 +67,7 @@ describe('Testing the Google Scraper API', () => {
       .catch(err => {
         // console.log(err)
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
   })
@@ -87,7 +87,7 @@ describe('Testing the App Store Scraper API', () => {
       .catch(err => {
         // console.log(err)
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
   })
@@ -112,7 +112,7 @@ describe('Testing unified Crawler API', () => {
       .catch(err => {
         console.log(JSON.stringify(err))
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
   })
@@ -136,7 +136,7 @@ describe('Testing unified Crawler API', () => {
       .catch(err => {
         if (err) console.log(err)
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
     it('should return the ranking of WhatsApp', function(done) {
@@ -157,7 +157,7 @@ describe('Testing unified Crawler API', () => {
       .catch(err => {
         if (err) console.log(err)
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
     it('should return the ranking of Word from Brazil Store', function(done) {
@@ -178,7 +178,7 @@ describe('Testing unified Crawler API', () => {
       .catch(err => {
         if (err) console.log(err)
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
     it('should return both rankings from game app', function(done) {
@@ -198,7 +198,7 @@ describe('Testing unified Crawler API', () => {
       .catch(err => {
         if (err) console.log(err)
         expect(err).to.equal(null)
-        done()
+        done(err)
       })
     })
   })
@@ -212,42 +212,44 @@ describe('Testing unified Crawler API', () => {
           country: 'br'
         })
         .then(result => {
+
           expect(result).to.be.an('array')
           done()
         })
         .catch(err => {
+
           if (err) console.log(err)
           expect(err).to.equal(null)
-          done()
+          done(err)
         })
       })
     })
-    describe('Testing if genre rank is returned correctly', () => {
-      it('should be a rank bigger than 0 for UBER', function(done){
-        mainFile.apple.getRankingSingleGenre({
-          free: true,
-          id: 368677368,
-          listOptions: {
-            category: 6003,
-            lang: 'en',
-            country: 'us'
-          }
-        })
-        .then(result => {
-          expect(result).to.be.an('object')
-          expect(result).to.have.property('listOptions')
-          expect(result).to.have.property('rank')
-          expect(result.rank).to.be.an('number')
-          expect(result.rank).to.be.above(0)
-          console.log("            Category Ranking: "+result.rank)
-          done()
-        })
-        .catch(err => {
-          if (err) console.log(err)
-          expect(err).to.equal(null)
-          done()
-        })
-      })
-    })
+    // describe('Testing if genre rank is returned correctly', () => {
+    //   it('should be a rank bigger than 0 for UBER', function(done){
+    //     mainFile.apple.getRankingSingleGenre({
+    //       free: true,
+    //       id: 368677368,
+    //       listOptions: {
+    //         category: 6003,
+    //         lang: 'en',
+    //         country: 'us'
+    //       }
+    //     })
+    //     .then(result => {
+    //       expect(result).to.be.an('object')
+    //       expect(result).to.have.property('listOptions')
+    //       expect(result).to.have.property('rank')
+    //       expect(result.rank).to.be.an('number')
+    //       expect(result.rank).to.be.above(0)
+    //       console.log("            Category Ranking: "+result.rank)
+    //       done()
+    //     })
+    //     .catch(err => {
+    //       if (err) console.log(err)
+    //       expect(err).to.equal(null)
+    //       done(err)
+    //     })
+    //   })
+    // })
   })
 })
