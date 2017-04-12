@@ -306,15 +306,16 @@ var getOverallRankingApple = (options) => {
     .then(result => {
       getFuncArrayAppleRanking(result, options)
         .then(funcArray => {
+          async.waterfall(
+            funcArray,
+            (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
+          )
         })
         .catch(err => dfd.reject(err))
     })
     .catch(err => dfd.reject(err))
 
-  async.waterfall(
-    funcArray,
-    (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
-  )
+
 
   return dfd.promise
 }
