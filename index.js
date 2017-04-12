@@ -120,8 +120,8 @@ var getGoogleRanking = (options) => {
 
           listOptions.category = googleScraper.category[result.genreId]
           listOptions.collection = result.free ?
-                                    googleScraper.collection.TOP_FREE :
-                                    googleScraper.collection.TOP_PAID
+            googleScraper.collection.TOP_FREE :
+            googleScraper.collection.TOP_PAID
           // console.log(listOptions.category)
           // console.log(listOptions)
           // console.log(result)
@@ -131,29 +131,29 @@ var getGoogleRanking = (options) => {
     },
     (listOptions, appInfo, callback) => {
       getEntireListOfCategoryGoogle(listOptions)
-      .then(result => {
-        appInfo.rank = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
-        callback(null, listOptions, appInfo)
-      })
-      .catch(err => callback(err))
+        .then(result => {
+          appInfo.rank = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+          callback(null, listOptions, appInfo)
+        })
+        .catch(err => callback(err))
     },
     (listOptions, appInfo, callback) => {
-      if(appInfo.genreId.indexOf('GAME') > -1) {
+      if (appInfo.genreId.indexOf('GAME') > -1) {
         listOptions.category = googleScraper.category.GAME
         getEntireListOfCategoryGoogle(listOptions)
-        .then(result => {
-          appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
-          callback(null, appInfo)
-        })
-        .catch(err => callback(err))
-      } else if(appInfo.genreId.indexOf('FAMILY') > -1) {
+          .then(result => {
+            appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+            callback(null, appInfo)
+          })
+          .catch(err => callback(err))
+      } else if (appInfo.genreId.indexOf('FAMILY') > -1) {
         listOptions.category = googleScraper.category.FAMILY
         getEntireListOfCategoryGoogle(listOptions)
-        .then(result => {
-          appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
-          callback(null, appInfo)
-        })
-        .catch(err => callback(err))
+          .then(result => {
+            appInfo.rankOverall = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+            callback(null, appInfo)
+          })
+          .catch(err => callback(err))
       } else {
         callback(null, appInfo)
       }
@@ -162,7 +162,7 @@ var getGoogleRanking = (options) => {
 
   async.waterfall(
     funcArray,
-    (err, result) => err? dfd.reject(err) : dfd.resolve(result)
+    (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
   )
 
   return dfd.promise
@@ -213,6 +213,7 @@ var getEntireListOfCategoryApple = (listOptions) => {
       appleScraper
         .list(listOptions)
         .then(result => {
+
           callback(null, result)
         })
         .catch(err => callback(err))
@@ -234,13 +235,15 @@ var getEntireListOfCategoryApple = (listOptions) => {
 var getAppleRankingSingleGenre = (options) => {
   var dfd = q.defer()
 
+  options = options || {}
+
   options = {
     free: options.free || true,
     id: options.id || 1038508829,
     listOptions: {
-      category: (options.listOptions||{}).category || 6014,
-      lang: 'en',
-      country: 'us'
+      category: (options.listOptions || {}).category || 6014,
+      lang: (options.listOptions || {}).lang || 'en',
+      country: (options.listOptions || {}).counter || 'us'
     }
   }
 
@@ -281,30 +284,74 @@ var getAppleRankingSingleGenre = (options) => {
  * @param {object} options - App Options
  * @returns promise
  */
- var getOverallRankingApple = (options) => {
-   var dfd = q.defer()
+var getOverallRankingApple = (options) => {
+  var dfd = q.defer()
 
-   options = options || {}
+  options = options || {}
 
-   options = {
-     id: options.id || 368677368
-   }
+  options = {
+    free: options.free || true,
+    id: options.id || 1038508829,
+    listOptions: {
+      category: (options.listOptions || {}).category || 6014,
+      lang: (options.listOptions || {}).lang || 'en',
+      country: (options.listOptions || {}).counter || 'us'
+    }
+  }
 
-   var funcArray = [
-     (callback) => {
-       appleScraper
-        .app(options)
-        .then(result =>{
+  var funcArray = []
 
+  appleScraper
+    .app(options)
+    .then(result => {
+      getFuncArrayAppleRanking(result, options)
+        .then(funcArray => {
         })
-     }
-   ]
-   async.waterfall(
-     funcArray,
-     (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
-   )
-   return dfd.promise
- }
+        .catch(err => dfd.reject(err))
+    })
+    .catch(err => dfd.reject(err))
+
+  async.waterfall(
+    funcArray,
+    (err, result) => err ? dfd.reject(err) : dfd.resolve(result)
+  )
+
+  return dfd.promise
+}
+
+/**
+ * Get function array for apple waterfall
+ * @function
+ * @param {object} options - App Options
+ * @returns promise
+ */
+var getFuncArrayAppleRanking = (appDetails, options) => {
+  var dfd = q.defer()
+
+  var genres = appDetails.genreIds
+  var count = 0
+
+  var funcArray = []
+
+  _.forEach(genres, (genres, i) => {
+
+    if (i == 0) {
+      funcArray.push(
+        (callback) => {
+          getAppleRankingSingleGenre
+          callback(null)
+        }
+      )
+    } else {
+    }
+
+    count++
+    if (count == genres.length) {
+    }
+  })
+
+  return dfd.promise
+}
 
 module.exports = {
   google: {
