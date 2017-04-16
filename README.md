@@ -280,11 +280,24 @@
   The .rank attribute is the current rank for the apps category, and the .rankOverall is the rank of the app on the Parent category. A certain game can be at Rank 4 on Action Games category but on Rank 12 for Games category.
 
   For the Apple App Store:
+  * `free`:
+  * `id`:
+  * `listOptions`:
+  *   ↳ `category`:
+  *   ↳ `lang`: 
+  *   ↳ `country`:
 
+  ```javascript
   var unifiedCrawler = require('google-play-scraper');
 
   var searchOptions = {
-
+    free: true,
+    id: 368677368,
+    listOptions: {
+      category: 6003,
+      lang: 'en',
+      country: 'us'
+    }
   }
 
   unifiedCrawler.apple.getRanking(searchOptions)
