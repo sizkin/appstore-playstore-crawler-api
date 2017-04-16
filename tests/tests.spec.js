@@ -28,7 +28,7 @@ var expect = chai.expect
 //       })
 //       .catch(err => {
 //         console.log(err)
-//         expect(err).to.equal(null)
+//
 //         done()
 //       })
 //     })
@@ -46,7 +46,7 @@ var expect = chai.expect
 //       })
 //       .catch(err => {
 //         console.log(err)
-//         expect(err).to.equal(null)
+//
 //         done()
 //       })
 //     })
@@ -58,7 +58,7 @@ describe('Testing the Google Scraper API', () => {
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
       this.timeout(15000)
-      mainFile.google.getSearchResult("Fruit Ninja")
+      mainFile.google.getSearchResult("Uber", 100)
       .then(result => {
         // console.log(result)
         expect(result).to.be.an('array')
@@ -66,7 +66,18 @@ describe('Testing the Google Scraper API', () => {
       })
       .catch(err => {
         // console.log(err)
-        expect(err).to.equal(null)
+        done(err)
+      })
+    })
+    it('Should return 100 results', function(done) {
+      this.timeout(15000)
+      mainFile.google.getSearchResult("Uber", 'stringeher')
+      .then(result => {
+        expect(result).to.have.lengthOf(100)
+        done()
+      })
+      .catch(err => {
+        // console.log(err)
         done(err)
       })
     })
@@ -78,7 +89,7 @@ describe('Testing the App Store Scraper API', () => {
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
       this.timeout(15000)
-      mainFile.apple.getSearchResult("Uber")
+      mainFile.apple.getSearchResult("Uber", 1)
       .then(result => {
         // console.log(result)
         expect(result).to.be.an('array')
@@ -86,7 +97,6 @@ describe('Testing the App Store Scraper API', () => {
       })
       .catch(err => {
         // console.log(err)
-        expect(err).to.equal(null)
         done(err)
       })
     })
@@ -105,13 +115,12 @@ describe('Testing unified Crawler API', () => {
         country: 'us'
       })
       .then(result => {
-        // console.log(result.length)
+        // console.log(result)
         expect(result).to.have.lengthOf(itemNumber)
         done()
       })
       .catch(err => {
         console.log(JSON.stringify(err))
-        expect(err).to.equal(null)
         done(err)
       })
     })
@@ -135,7 +144,6 @@ describe('Testing unified Crawler API', () => {
       })
       .catch(err => {
         if (err) console.log(err)
-        expect(err).to.equal(null)
         done(err)
       })
     })
@@ -156,7 +164,6 @@ describe('Testing unified Crawler API', () => {
       })
       .catch(err => {
         if (err) console.log(err)
-        expect(err).to.equal(null)
         done(err)
       })
     })
@@ -177,17 +184,17 @@ describe('Testing unified Crawler API', () => {
       })
       .catch(err => {
         if (err) console.log(err)
-        expect(err).to.equal(null)
         done(err)
       })
     })
     it('should return both rankings from game app', function(done) {
       this.timeout(15000)
       mainFile.google.getRanking({
-          appId: 'com.nway.powerrangerslegacywars',
-          country:'us'
+        appId: 'com.nway.powerrangerslegacywars',
+        country:'us'
       })
       .then(result => {
+        console.log(result)
         expect(result).to.be.an('object')
         expect(result).to.have.property('rank').above(-1)
         expect(result).to.have.property('rankOverall')
@@ -197,7 +204,6 @@ describe('Testing unified Crawler API', () => {
       })
       .catch(err => {
         if (err) console.log(err)
-        expect(err).to.equal(null)
         done(err)
       })
     })
@@ -212,12 +218,13 @@ describe('Testing unified Crawler API', () => {
           country: 'br'
         })
         .then(result => {
+          // console.log(result)
           expect(result).to.be.an('array')
           done()
         })
         .catch(err => {
           if (err) console.log(err)
-          expect(err).to.equal(null)
+
           done(err)
         })
       })
@@ -244,7 +251,7 @@ describe('Testing unified Crawler API', () => {
         })
         .catch(err => {
           if (err) console.log(err)
-          expect(err).to.equal(null)
+
           done(err)
         })
       })
