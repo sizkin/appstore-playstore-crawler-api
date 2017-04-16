@@ -57,7 +57,7 @@ describe('Testing the Google Scraper API', () => {
   //Permanent test
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.google.getSearchResult("Fruit Ninja")
       .then(result => {
         // console.log(result)
@@ -77,7 +77,7 @@ describe('Testing the App Store Scraper API', () => {
   //Permanent test
   describe('Testing how the search result return', () => {
     it('Should return details of the search by name', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.apple.getSearchResult("Uber")
       .then(result => {
         // console.log(result)
@@ -97,7 +97,7 @@ describe('Testing unified Crawler API', () => {
   describe('Testing getting entire list of a category', () => {
     var itemNumber = 200
     it('Should return '+itemNumber+' items', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.google.getEntireListOfCategory({
         category: googleScraper.category.GAME,
         collection: googleScraper.collection.TOP_FREE,
@@ -119,7 +119,7 @@ describe('Testing unified Crawler API', () => {
 
   describe('Getting category ranking from app ID and', () => {
     it('should return the ranking of Fruit Ninja App', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.google.getRanking({
           appId: 'com.halfbrick.fruitninja',
           lang: 'en',
@@ -140,7 +140,7 @@ describe('Testing unified Crawler API', () => {
       })
     })
     it('should return the ranking of WhatsApp', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.google.getRanking({
           appId: 'com.whatsapp',
           lang: 'en',
@@ -161,7 +161,7 @@ describe('Testing unified Crawler API', () => {
       })
     })
     it('should return the ranking of Word from Brazil Store', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.google.getRanking({
           appId: 'com.microsoft.office.word',
           lang: 'pt',
@@ -182,7 +182,7 @@ describe('Testing unified Crawler API', () => {
       })
     })
     it('should return both rankings from game app', function(done) {
-      this.timeout(10000)
+      this.timeout(15000)
       mainFile.google.getRanking({
           appId: 'com.nway.powerrangerslegacywars',
           country:'us'
@@ -212,44 +212,42 @@ describe('Testing unified Crawler API', () => {
           country: 'br'
         })
         .then(result => {
-
           expect(result).to.be.an('array')
           done()
         })
         .catch(err => {
-
           if (err) console.log(err)
           expect(err).to.equal(null)
           done(err)
         })
       })
     })
-    // describe('Testing if genre rank is returned correctly', () => {
-    //   it('should be a rank bigger than 0 for UBER', function(done){
-    //     mainFile.apple.getRankingSingleGenre({
-    //       free: true,
-    //       id: 368677368,
-    //       listOptions: {
-    //         category: 6003,
-    //         lang: 'en',
-    //         country: 'us'
-    //       }
-    //     })
-    //     .then(result => {
-    //       expect(result).to.be.an('object')
-    //       expect(result).to.have.property('listOptions')
-    //       expect(result).to.have.property('rank')
-    //       expect(result.rank).to.be.an('number')
-    //       expect(result.rank).to.be.above(0)
-    //       console.log("            Category Ranking: "+result.rank)
-    //       done()
-    //     })
-    //     .catch(err => {
-    //       if (err) console.log(err)
-    //       expect(err).to.equal(null)
-    //       done(err)
-    //     })
-    //   })
-    // })
+    describe('Testing if genre rank is returned correctly', () => {
+      it('should be a rank bigger than 0 for UBER', function(done){
+        mainFile.apple.getRankingSingleGenre({
+          free: true,
+          id: 368677368,
+          listOptions: {
+            category: 6003,
+            lang: 'en',
+            country: 'us'
+          }
+        })
+        .then(result => {
+          expect(result).to.be.an('object')
+          expect(result).to.have.property('listOptions')
+          expect(result).to.have.property('rank')
+          expect(result.rank).to.be.an('number')
+          expect(result.rank).to.be.above(0)
+          console.log("            Category Ranking: "+result.rank)
+          done()
+        })
+        .catch(err => {
+          if (err) console.log(err)
+          expect(err).to.equal(null)
+          done(err)
+        })
+      })
+    })
   })
 })
