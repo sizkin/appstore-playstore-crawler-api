@@ -11,14 +11,23 @@ const async = require('async')
 * @param {string} appName - Name of App
 * @returns promise
 */
-var getAppleSearchResult = (appName) => {
+var getAppleSearchResult = (appName, amount) => {
   var dfd = q.defer()
   appName = appName || 'Plants Vs Zombies'
+
+  amount = parseInt(amount)
+  
+  if (amount) {
+    if (amount < 1) amount = 1
+    if (amount > 250) amount = 250
+  } else {
+    amount = 100
+  }
 
   appleScraper
     .search({
       term: appName,
-      num: 250
+      num: amount
     })
     .then(result => {
       dfd.resolve(result)
@@ -194,5 +203,6 @@ var getFuncArrayAppleRanking = (appDetails, options) => {
 module.exports = {
   getSearchResult: getAppleSearchResult,
   getEntireListOfCategory: getEntireListOfCategoryApple,
-  getRankingSingleGenre: getAppleRankingSingleGenre
+  getRankingSingleGenre: getAppleRankingSingleGenre,
+  getRanking: getOverallRankingApple
 }
