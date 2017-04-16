@@ -7,3 +7,8 @@ script: npm install
 
 #Test script
 script: npm test
+
+#Branches to listen to
+branches:
+  only:
+  - master
