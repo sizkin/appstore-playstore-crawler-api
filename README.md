@@ -1,6 +1,6 @@
 # Crawler to retrieve the app ranking
 ![alt text](https://travis-ci.org/midyan/appstore-playstore-crawler-api.svg?branch=master)
-
+[![npm version](https://badge.fury.io/js/appstore-playstore-crawler-api.svg)](https://badge.fury.io/js/appstore-playstore-crawler-api)
 ## What is it?
   It's a simple NodeJS API that returns the current day's App ranking in its category.
   It uses the *google-play-scraper* and the *app-store-scraper* packages form npm to
