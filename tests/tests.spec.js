@@ -217,7 +217,6 @@ describe('Testing unified Crawler API', () => {
         })
         .catch(err => {
           if (err) console.log(err)
-          expect(err).to.equal(null)
           done(err)
         })
       })
@@ -244,7 +243,49 @@ describe('Testing unified Crawler API', () => {
         })
         .catch(err => {
           if (err) console.log(err)
-          expect(err).to.equal(null)
+          done(err)
+        })
+      })
+      it('should return an array of 1 or more objects for UBER', function(done) {
+        this.timeout(15000)
+
+        mainFile.apple.getOverallRanking({
+          free: true,
+          id: 368677368,
+          listOptions: {
+            category: 6003,
+            lang: 'en',
+            country: 'us'
+          }
+        })
+        .then(result => {
+          expect(result).to.be.an('array').and.to.have.length.of.at.least(1)
+          done()
+        })
+        .catch(err => {
+          if (err) console.log(err)
+          done(err)
+        })
+      })
+      it('should return an array of objects with rank and category for UBER', function(done) {
+        this.timeout(15000)
+
+        mainFile.apple.getOverallRanking({
+          free: true,
+          id: 368677368,
+          listOptions: {
+            category: 6003,
+            lang: 'en',
+            country: 'us'
+          }
+        })
+        .then(result => {
+          expect(result).to.be.an('array').and.to.have.length.of.at.least(1)
+          expect(result[0].result).to.have.property('rank').and.to.be.above(0)
+          done()
+        })
+        .catch(err => {
+          if (err) console.log(err)
           done(err)
         })
       })

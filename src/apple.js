@@ -3,7 +3,6 @@ const _ = require('lodash')
 const q = require('q')
 const async = require('async')
 
-
 /**
 * Get search result by entering name of App
 * from Apple App Store.
@@ -49,7 +48,6 @@ var getEntireListOfCategoryApple = (listOptions) => {
       appleScraper
         .list(listOptions)
         .then(result => {
-
           callback(null, result)
         })
         .catch(err => callback(err))
@@ -151,8 +149,6 @@ var getOverallRankingApple = (options) => {
     })
     .catch(err => dfd.reject(err))
 
-
-
   return dfd.promise
 }
 
@@ -170,29 +166,49 @@ var getFuncArrayAppleRanking = (appDetails, options) => {
 
   var funcArray = []
 
-  _.forEach(genres, (genres, i) => {
-
+  _.forEach(genres, (genre, i) => {
     if (i == 0) {
-      funcArray.push(
-        (callback) => {
-          getAppleRankingSingleGenre
-          callback(null)
-        }
-      )
+      funcArray[i] = (callback) => {
+        getAppleRankingSingleGenre(options)
+          .then(result => {
+            var resultArray = []
+            resultArray[i] = {
+              category: genre,
+              cIndex: i,
+              result: result
+            }
+
+            callback(null, resultArray, options)
+          })
+          .catch(err => dfd.reject(err))
+      }
     } else {
+      funcArray[i] = (resultArray, options, callback) => {
+        getAppleRankingSingleGenre(options)
+          .then(result => {
+            resultArray[i] = {
+              category: genre,
+              cIndex: i,
+              result: result
+            }
+            callback(null, resultArray, options)
+          })
+          .catch(err => dfd.reject(err))
+      }
     }
 
     count++
     if (count == genres.length) {
+      dfd.resolve(funcArray)
     }
   })
 
   return dfd.promise
 }
 
-
 module.exports = {
   getSearchResult: getAppleSearchResult,
   getEntireListOfCategory: getEntireListOfCategoryApple,
+  getOverallRanking: getOverallRankingApple,
   getRankingSingleGenre: getAppleRankingSingleGenre
 }
