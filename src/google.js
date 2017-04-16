@@ -11,13 +11,23 @@ const async = require('async')
  * @param {string} appName - Name of App
  * @returns promise
  */
-var getGoogleSearchResult = (appName) => {
+var getGoogleSearchResult = (appName, amount) => {
   var dfd = q.defer()
   appName = appName || 'Plants Vs Zombies'
+
+  amount = parseInt(amount)
+  
+  if (amount) {
+    if (amount < 1) amount = 1
+    if (amount > 250) amount = 250
+  } else {
+    amount = 100
+  }
+
   googleScraper
     .search({
       term: appName,
-      num: 250
+      num: amount
     })
     .then(result => {
       dfd.resolve(result)
