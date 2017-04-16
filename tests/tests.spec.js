@@ -282,6 +282,7 @@ describe('Testing unified Crawler API', () => {
           }
         })
         .then(result => {
+          // console.log(result)
           expect(result.ranks).to.be.an('array').and.to.have.length.of.at.least(1)
           done()
         })

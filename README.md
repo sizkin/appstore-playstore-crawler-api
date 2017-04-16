@@ -29,7 +29,6 @@
   - [getSearchResult](#getsearchresult): Retrieves 1 to 250 top results for a given string as search parameter
   - [getEntireListOfCategory](#getentirelistofcategory): Retrieves the top apps for a single category. It return 100 apps for the Apple App Store and 200 for the Google Play Store
   - [getRanking](#getranking): Gets the ranking of a given App.
-  - [getRankingSingleGenre (Apple only)](#getrankingsinglegenre): Gets the ranking from a single genre for a Apple App
 
 ### getSearchResult
   Retrieves 1 to 250 top results for a given string as search parameter. It could be any string.
@@ -49,7 +48,7 @@
       appId: 'com.ubercab.UberClient',
       title: 'Uber',
       url: 'https://itunes.apple.com/us/app/uber/id368677368?mt=8&uo=4',
-      description: 'Uber is a ridesharing app for fast, reliable rides in minutes—day or night. There’s no need to park or wait for a taxi or bus. ...,
+      description: 'Uber is a ridesharing app for fast, reliable rides in minutes—day or night. There’s no need to park or wait for a taxi or bus. ...',
       icon: 'http://is3.mzstatic.com/image/thumb/Purple111/v4/32/36/9a/32369abe-e5a8-60b2-1d90-9322a7c87aa9/source/512x512bb.jpg',
       genres: [ 'Travel', 'Lifestyle' ],
       genreIds: [ '6003', '6012' ],
@@ -128,8 +127,8 @@
   Search Options:
   * `category`: The google Play Category name. You can find a list here on the original google-play-scraper : [List](https://github.com/facundoolano/google-play-scraper/blob/dev/lib/constants.js).
   * `collection`: The google Play Collection name. You can find a list here on the original google-play-scraper : [List](https://github.com/facundoolano/google-play-scraper/blob/dev/lib/constants.js).
-  * `lang` : Not required, and it defaults to 'en'.
-  * `country`: Not required, and it defaults to 'us'.
+  * `lang` : Not required, and it defaults to `'en'`.
+  * `country`: Not required, and it defaults to `'us'`.
 
 
   For the Google Play Store:
@@ -177,7 +176,7 @@
   * `category`: The Apple App Store Category name. You can find a list here on the original app-store-scraper : [List](https://github.com/facundoolano/app-store-scraper/blob/master/lib/constants.js).
   * `collection`: The Apple App Store Collection name. You can find a list here on the original app-store-scraper : [List](https://github.com/facundoolano/app-store-scraper/blob/master/lib/constants.js).
   * `lang` : Not required, and it defaults to country.
-  * `country`: Not required, and it defaults to 'us'.
+  * `country`: Not required, and it defaults to `'us'`.
 
   ```javascript
   var unifiedCrawler = require('google-play-scraper');
@@ -218,8 +217,8 @@
   For the Google Play Store:
   Search Options:
   * `appId`: The Google Play ID of the app. Defaults to `'com.halfbrick.fruitninja'`.
-  * `lang` : Not required, and it defaults to 'en'.
-  * `country`: Not required, and it defaults to 'us'.
+  * `lang` : Not required, and it defaults to `'en'`.
+  * `country`: Not required, and it defaults to `'us'`.
 
   ```javascript
   var unifiedCrawler = require('google-play-scraper');
@@ -280,21 +279,17 @@
   The .rank attribute is the current rank for the apps category, and the .rankOverall is the rank of the app on the Parent category. A certain game can be at Rank 4 on Action Games category but on Rank 12 for Games category.
 
   For the Apple App Store:
-  * `free`:
-  * `id`:
-  * `listOptions`:
-  *   ↳ `category`:
-  *   ↳ `lang`: 
-  *   ↳ `country`:
+  * `id`: App ID on the Apple store. Something like: 368677368
+  * `listOptions`: Object with list of options for getting the rank.
+  *   ↳ `lang`    : Not required, and it defaults to `'en'`.
+  *   ↳ `country` : Not required, and it defaults to `'us'`.
 
   ```javascript
   var unifiedCrawler = require('google-play-scraper');
 
   var searchOptions = {
-    free: true,
     id: 368677368,
     listOptions: {
-      category: 6003,
       lang: 'en',
       country: 'us'
     }
@@ -308,6 +303,12 @@
   ```javascript
   'SEARCH RESULT HERE'
   ```
+  The ranks for each category can be found inside the .ranks array.
+  Rank Object:
+  * `category`: Category ID
+  * `cIndex`: Index of the category. 0 is the primary, all else follows.
+  * `rank`: Rank of the app in this category. If 0, then the app is not on the top 100
+  * `listOptions`: Object with list of options for getting the rank.
 
 # How to test it?
   To run all unit testing simply do:
@@ -316,3 +317,5 @@
   ```
 
 # Thanks and acknowledgments
+  First, I would like to thank [facundoolano](https://github.com/facundoolano) for creating the scraper in which this API is built upon.
+  Also, I would like to thank [Mauricio Vieira](https://github.com/mauriciovieira) for helping me along the way and giving awesome feedback.
