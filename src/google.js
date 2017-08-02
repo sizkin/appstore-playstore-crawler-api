@@ -113,7 +113,8 @@ var getGoogleRanking = (options) => {
   options = {
     appId: options.appId || 'com.halfbrick.fruitninja',
     lang: options.lang || 'en',
-    country: options.country || 'us'
+    country: options.country || 'us',
+    collection: options.collection || ''
   }
 
   var funcArray = [
@@ -129,9 +130,10 @@ var getGoogleRanking = (options) => {
           }
 
           listOptions.category = googleScraper.category[result.genreId]
-          listOptions.collection = result.free ?
+          listOptions.collection = (options.collection == '') ? (result.free ?
             googleScraper.collection.TOP_FREE :
-            googleScraper.collection.TOP_PAID
+            googleScraper.collection.TOP_PAID) :
+            options.collection;
           // console.log(listOptions.category)
           // console.log(listOptions)
           // console.log(result)
@@ -142,7 +144,19 @@ var getGoogleRanking = (options) => {
     (listOptions, appInfo, callback) => {
       getEntireListOfCategoryGoogle(listOptions)
         .then(result => {
-          appInfo.rank = _.findIndex(result, (app) => app.appId === appInfo.appId) + 1
+          console.log(listOptions);
+          /*** 
+           * Nick Chan<sizkin@gmail.com> Fixed 
+           * Missing the count before at this result set 
+           * e.g.
+           * listOptions.start -> 200
+           * appInfo.rank = listOptions.start + (_.findIndex(result, (app) => app.appId === appInfo.appId) + 1)
+           * Non-fixed:
+           * Only find the index of the app at this result array
+           * Fixed:
+           * Need to sum the offset from `listOptions.start` 
+           ***/
+          appInfo.rank = listOptions.start + (_.findIndex(result, (app) => app.appId === appInfo.appId) + 1)
           callback(null, listOptions, appInfo)
         })
         .catch(err => callback(err))
