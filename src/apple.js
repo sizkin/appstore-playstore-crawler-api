@@ -86,7 +86,8 @@ var getAppleRankingSingleGenre = (nOptions, genre) => {
     listOptions: {
       category: (nOptions.listOptions || {}).category || [6014],
       lang: (nOptions.listOptions || {}).lang || 'en',
-      country: (nOptions.listOptions || {}).country || 'us'
+      country: (nOptions.listOptions || {}).country || 'us',
+      collection: (nOptions.listOptions || {}).collection || ''
     }
   }
 
@@ -94,9 +95,18 @@ var getAppleRankingSingleGenre = (nOptions, genre) => {
 
   options.listOptions.category = parseInt(genre)
 
+  /*
   options.listOptions.collection = options.free?
                                     appleScraper.collection.TOP_FREE_IOS :
                                     appleScraper.collection.TOP_PAID_IOS
+  */
+
+  options.listOptions.collection = (options.listOptions.collection == '') ? 
+                                    (options.free ? 
+                                     appleScraper.collection.TOP_FREE_IOS : 
+                                     appleScraper.collection.TOP_PAID_IOS
+                                    ) :
+                                    options.listOptions.collection;
 
   var funcArray = [
     (callback) => {
